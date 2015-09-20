@@ -1,0 +1,10 @@
+{
+  "db.driver": "org.postgresql.Driver",
+  "db.class.name": "org.postgresql.ds.PGSimpleDataSource",
+  "db.jdbc.url": "jdbc:postgresql://localhost:5432/potato_db",
+  "db.username": "potato",
+  "db.password": "potato",
+  "db.name": "potato_db",
+  "db.schema": "potato_schema"
+}
+
