@@ -1,48 +1,50 @@
 package io.github.qrman.potato;
 
-import io.github.qrman.potato.entity.Transaction;
-import io.github.qrman.potato.entity.TransactionPosition;
+import com.google.inject.Inject;
+import io.github.qrman.potato.entity.PotatoBag;
+import io.github.qrman.potato.entity.Potato;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
-import io.vertx.ext.unit.junit.RunTestOnContext;
-import io.vertx.ext.unit.junit.VertxUnitRunner;
-import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(VertxUnitRunner.class)
-public class PotatoVerticleTest {
+public class PotatoVerticleTest extends IntegrationTests {
 
-    @Rule
-    public RunTestOnContext rule = new RunTestOnContext();
-
-    @Before
-    public void deployVerticle(TestContext context) {
-        rule.vertx().deployVerticle(new PotatoVerticle(), context.asyncAssertSuccess());
-    }
+    @Inject
+    private EventBus eb;
 
     @Test
-    public void will_receive_message_and_response(TestContext context) {
+    public void will_store_potato_bag(TestContext context) {
+        Async async = context.async();
 
-        Transaction transaction = new Transaction(
+        PotatoBag potatoBag = new PotatoBag(
           "Poland",
           Arrays.asList(
-            new TransactionPosition(150L, new BigDecimal("100")),
-            new TransactionPosition(300L, new BigDecimal("200")),
-            new TransactionPosition(450L, new BigDecimal("350"))
-          ), 
-          new LocalDate(2015, 9, 21));
+            new Potato(10, 100),
+            new Potato(7, 100),
+            new Potato(5, 100)
+          ),
+          date("2015-09-21"));
 
-        Async async = context.async();
-        rule.vertx().eventBus().send("potato-transaction", Json.encode(transaction), (response) -> {
+        eb.send("potato-bag", Json.encode(potatoBag), (bagResponse) -> {
+            context.assertEquals(bagResponse.result().body(), "Potato bag stored in basement", "Response status should be");
+            eb.send("potatoes-in-basement", "Poland", (AsyncResult<Message<String>> potatoesResponse) -> {
 
-            context.assertEquals(response.result().body(), "Transaction stored", "Response status should be");
-            async.complete();
+                List<Potato> decodeValue = Json.decodeValue(potatoesResponse.result().body(), List.class);
+
+                context.assertEquals(decodeValue.size(), 3, "Potatoes number should be");
+                async.complete();
+            });
         });
+    }
+
+    private static LocalDate date(String date) {
+        return LocalDate.parse(date);
     }
 }

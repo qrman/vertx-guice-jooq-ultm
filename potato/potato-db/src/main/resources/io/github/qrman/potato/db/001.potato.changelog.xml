@@ -7,35 +7,32 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
   <changeSet id="001" author="qrman">
-    <createTable schemaName="potato_schema"  tableName="potato_transaction">
+    <createTable schemaName="potato_schema"  tableName="potato_bag">
       <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="origin" type="varchar(256)">
         <constraints nullable="false"/>
       </column>
-      <column name="transaction_date" type="timestamp">
+      <column name="delivery_date" type="date">
         <constraints nullable="false" />
       </column>
     </createTable>
     
-    <createTable schemaName="potato_schema"  tableName="potato_transaction_position">
+    <createTable schemaName="potato_schema"  tableName="potato">
       <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="transaction" type="bigint">
-        <constraints foreignKeyName="FK_position__potato" references="potato_schema.potato_transaction(id)" />
+      <column name="bag" type="bigint">
+        <constraints foreignKeyName="FK_potato__bag" references="potato_schema.potato_bag(id)" />
       </column>
-      <column name="loads" type="bigint">
-        <constraints nullable="false" unique="true" />
+      <column name="durability" type="integer">
+        <constraints nullable="false"/>
       </column>
-      <column name="price" type="numeric(19,2)">
-        <constraints nullable="false" unique="true" />
+      <column name="quality" type="integer">
+        <constraints nullable="false"/>
       </column>
     </createTable>
-
-    <sql>ALTER SEQUENCE potato_schema.potato_transaction_id_seq RESTART WITH 1001</sql>
-
   </changeSet>
 
 </databaseChangeLog>

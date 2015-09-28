@@ -1,6 +1,5 @@
 package io.github.qrman.potato.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer;
@@ -14,13 +13,12 @@ import org.joda.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction {
+public class PotatoBag {
 
     private String origin;
-    private List<TransactionPosition> items;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private List<Potato> items;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate transactionDate;
+    private LocalDate deliveryDate;
 
 }

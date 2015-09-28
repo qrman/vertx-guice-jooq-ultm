@@ -2,6 +2,7 @@ package io.github.qrman.potato.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+import io.github.qrman.potato.db.guice.DbModule;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
@@ -22,6 +23,7 @@ public class GuiceModule extends AbstractModule {
     protected void configure() {
         bind(EventBus.class).toInstance(vertx.eventBus());
         Names.bindProperties(binder(), extractToProperties(context.config()));
+        install(new DbModule());
     }
 
     private Properties extractToProperties(JsonObject config) {

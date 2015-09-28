@@ -1,14 +1,14 @@
 package io.github.qrman.potato.db.converter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import org.joda.time.DateTime;
 import org.jooq.Converter;
 
-public class DateTimeConverter implements Converter<Timestamp, DateTime> {
+public class DateTimeConverter implements Converter<Date, DateTime> {
 
 
     @Override
-    public DateTime from(Timestamp databaseObject) {
+    public DateTime from(Date databaseObject) {
         if (databaseObject == null) {
             return null;
         }
@@ -16,16 +16,16 @@ public class DateTimeConverter implements Converter<Timestamp, DateTime> {
     }
 
     @Override
-    public Timestamp to(DateTime userObject) {
+    public Date to(DateTime userObject) {
         if (userObject == null) {
             return null;
         }
-        return new Timestamp(userObject.getMillis());
+        return new Date(userObject.getMillis());
     }
 
     @Override
-    public Class<Timestamp> fromType() {
-        return Timestamp.class;
+    public Class<Date> fromType() {
+        return Date.class;
     }
 
     @Override

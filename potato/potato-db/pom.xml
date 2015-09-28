@@ -158,14 +158,14 @@
               <inputSchema>${db.schema}</inputSchema>
               <customTypes>
                 <customType>
-                  <name>org.joda.time.DateTime</name>
-                  <converter>io.github.qrman.potato.db.converter.DateTimeConverter</converter>
+                  <name>org.joda.time.LocalDate</name>
+                  <converter>io.github.qrman.potato.db.converter.LocalDateConverter</converter>
                 </customType>
               </customTypes>
               <forcedTypes>
                 <forcedType>
-                  <name>org.joda.time.DateTime</name>
-                  <expression>.*\.(.*_date)</expression>
+                  <name>org.joda.time.LocalDate</name>
+                  <expression>.*\.(delivery_date)</expression>
                 </forcedType>
               </forcedTypes>
             </database>

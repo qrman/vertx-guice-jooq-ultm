@@ -1,6 +1,5 @@
 package io.github.qrman.potato.entity;
 
-import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -8,9 +7,9 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionPosition {
+public class Potato {
 
-    private long loads;
-    private BigDecimal price;
+    private int durability;
+    private int quality;
 
 }
