@@ -1,12 +1,12 @@
 package io.github.qrman.potato;
 
-import io.github.qrman.potato.logic.PotatoBasement;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import io.github.qrman.potato.model.Potato;
 import io.github.qrman.potato.model.PotatoBag;
 import io.github.qrman.potato.guice.GuiceModule;
+import io.github.qrman.potato.logic.BasementFetch;
 import io.github.qrman.potato.logic.RottenPotatoException;
+import io.github.qrman.potato.logic.BasementStore;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
@@ -19,7 +19,10 @@ import lombok.extern.java.Log;
 public class PotatoVerticle extends AbstractVerticle {
 
     @Inject
-    private PotatoBasement potatoBasement;
+    private BasementStore basementStore;
+
+    @Inject
+    private BasementFetch basementFetch;
 
     @Override
     public void start() throws Exception {
@@ -30,7 +33,7 @@ public class PotatoVerticle extends AbstractVerticle {
             log.log(Level.INFO, "Potato bag received {0}", potatoBag);
 
             try {
-                potatoBasement.store(potatoBag);
+                basementStore.store(potatoBag);
             } catch (RottenPotatoException ex) {
                 bagWithPotatoMessage.reply("Bag with rotten potato cannot be stored");
             }
@@ -40,7 +43,7 @@ public class PotatoVerticle extends AbstractVerticle {
         vertx.eventBus().consumer("potatoes-in-basement", (Message<String> countryMessage) -> {
             String potatoOriginCountry = countryMessage.body();
             log.log(Level.INFO, "Searching in basement for potatoes from {0}", potatoOriginCountry);
-            List<Potato> potatoes = potatoBasement.fetchByOrigin(potatoOriginCountry);
+            List<Potato> potatoes = basementFetch.fetchByOrigin(potatoOriginCountry);
             countryMessage.reply(Json.encode(potatoes));
         });
     }

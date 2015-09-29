@@ -1,7 +1,6 @@
 package io.github.qrman.potato.logic;
 
 import com.github.witoldsz.ultm.TxManager;
-import com.github.witoldsz.ultm.UnitOfWork;
 import static io.github.qrman.potato.db.Tables.POTATO;
 import static io.github.qrman.potato.db.Tables.POTATO_BAG;
 import io.github.qrman.potato.db.TxJooq;
@@ -9,49 +8,34 @@ import io.github.qrman.potato.db.tables.records.PotatoBagRecord;
 import io.github.qrman.potato.db.tables.records.PotatoRecord;
 import io.github.qrman.potato.model.Potato;
 import io.github.qrman.potato.model.PotatoBag;
-import java.util.List;
 import javax.inject.Inject;
 import org.jooq.DSLContext;
-import org.jooq.JoinType;
-import org.jooq.Record;
 
-public class PotatoBasement {
+public class BasementStore {
 
     private final TxManager txManager;
-    private final DSLContext jooq;
-
     private final DSLContext txJooq;
-    private final PotatoQualityChecker qualityChecker;
+    private final PotatoQuality potatoQuality;
 
     @Inject
-    public PotatoBasement(DSLContext jooq, @TxJooq DSLContext txJooq, TxManager txManager, PotatoQualityChecker qualityChecker) {
-        this.jooq = jooq;
-        this.txJooq = txJooq;
+    public BasementStore(TxManager txManager, @TxJooq DSLContext txJooq, PotatoQuality potatoQuality) {
         this.txManager = txManager;
-        this.qualityChecker = qualityChecker;
+        this.txJooq = txJooq;
+        this.potatoQuality = potatoQuality;
     }
 
     public void store(PotatoBag potatoBag) {
-
-        txManager.begin();
-        try {
-
+        txManager.tx(() -> {
             PotatoBagRecord potatoBagRecord = txJooq.newRecord(POTATO_BAG);
             potatoBagRecord.setOrigin(potatoBag.getOrigin());
             potatoBagRecord.store();
 
             potatoBag.getItems().stream()
               .forEach((Potato potato) -> {
-                  qualityChecker.checkPotato(potato);
+                  potatoQuality.checkPotato(potato);
                   storePotato(potato, potatoBagRecord);
               });
-
-            txManager.commit();
-        } catch (Exception ex) {
-            txManager.rollback();
-            throw ex; // or whatever you find appropriate
-        }
-
+        });
     }
 
     private void storePotato(Potato potato, PotatoBagRecord potatoBagRecord) {
@@ -61,13 +45,4 @@ public class PotatoBasement {
         potatoRecord.store();
     }
 
-    public List<Potato> fetchByOrigin(String potatoOriginCountry) {
-        return jooq.select()
-          .from(POTATO)
-          .join(POTATO_BAG, JoinType.JOIN).onKey()
-          .where(POTATO_BAG.ORIGIN.eq(potatoOriginCountry))
-          .fetch().map((Record record) -> {
-              return new Potato(record.getValue(POTATO.QUALITY));
-          });
-    }
 }

@@ -2,7 +2,7 @@ package io.github.qrman.potato.logic;
 
 import io.github.qrman.potato.model.Potato;
 
-public class PotatoQualityChecker {
+public class PotatoQuality {
 
     public void checkPotato(Potato potato) {
         if (potato.getQuality() < 100) {
