@@ -14,9 +14,6 @@
       <column name="origin" type="varchar(256)">
         <constraints nullable="false"/>
       </column>
-      <column name="delivery_date" type="date">
-        <constraints nullable="false" />
-      </column>
     </createTable>
     
     <createTable schemaName="potato_schema"  tableName="potato">
@@ -25,9 +22,6 @@
       </column>
       <column name="bag" type="bigint">
         <constraints foreignKeyName="FK_potato__bag" references="potato_schema.potato_bag(id)" />
-      </column>
-      <column name="durability" type="integer">
-        <constraints nullable="false"/>
       </column>
       <column name="quality" type="integer">
         <constraints nullable="false"/>

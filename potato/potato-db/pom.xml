@@ -149,31 +149,15 @@
           </jdbc>
 
           <!-- Generator parameters -->
-
-
           <generator>
             <database>
               <name>org.jooq.util.postgres.PostgresDatabase</name>
               <includes>.*</includes>
               <inputSchema>${db.schema}</inputSchema>
-              <customTypes>
-                <customType>
-                  <name>org.joda.time.LocalDate</name>
-                  <converter>io.github.qrman.potato.db.converter.LocalDateConverter</converter>
-                </customType>
-              </customTypes>
-              <forcedTypes>
-                <forcedType>
-                  <name>org.joda.time.LocalDate</name>
-                  <expression>.*\.(delivery_date)</expression>
-                </forcedType>
-              </forcedTypes>
             </database>
-
             <generate>
               <relations>true</relations>
             </generate>
-
             <target>
               <packageName>io.github.qrman.potato.db</packageName>
               <directory>target/generated-sources/</directory>
