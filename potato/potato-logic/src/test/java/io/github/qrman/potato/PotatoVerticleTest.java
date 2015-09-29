@@ -11,7 +11,6 @@ import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import java.util.Arrays;
 import java.util.List;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
 public class PotatoVerticleTest extends IntegrationTests {
@@ -68,10 +67,6 @@ public class PotatoVerticleTest extends IntegrationTests {
             });
         });
 
-    }
-
-    private static LocalDate date(String date) {
-        return LocalDate.parse(date);
     }
 
     private int quality(int quality) {

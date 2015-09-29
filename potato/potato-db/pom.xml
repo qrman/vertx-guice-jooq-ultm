@@ -14,21 +14,26 @@
 
   <dependencies>
 
+    <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.16.6</version>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- Guice -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>4.0</version>
     </dependency>
+    
+    <!-- ULTM -->
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>2.8.2</version>
+      <groupId>com.github.witoldsz</groupId>
+      <artifactId>ultm</artifactId>
+      <version>2.1</version>
     </dependency>
 
     <!-- Postgres -->

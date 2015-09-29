@@ -46,14 +46,6 @@
       <scope>provided</scope>
     </dependency>
     
-    <!-- ULTM -->
-    <dependency>
-      <groupId>com.github.witoldsz</groupId>
-      <artifactId>ultm</artifactId>
-      <version>2.1</version>
-    </dependency>
-    
-    
     <!-- Potato modules -->
     <dependency>
       <groupId>io.github.qrman</groupId>

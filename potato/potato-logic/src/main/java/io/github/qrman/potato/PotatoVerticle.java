@@ -23,7 +23,6 @@ public class PotatoVerticle extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-        //Binds all dependencies to already initialized vertx instance
         Guice.createInjector(new GuiceModule(vertx)).injectMembers(this);
 
         vertx.eventBus().consumer("potato-bag", (Message<String> bagWithPotatoMessage) -> {
