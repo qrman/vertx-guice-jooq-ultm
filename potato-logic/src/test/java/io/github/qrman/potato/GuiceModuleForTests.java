@@ -4,11 +4,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import java.util.Properties;
 
-public class PropertiesModule extends AbstractModule {
+public class GuiceModuleForTests extends AbstractModule {
     
     private Properties properties;
 
-    public PropertiesModule(Properties properties) {
+    public GuiceModuleForTests(Properties properties) {
         this.properties = properties;
     }
 

@@ -22,11 +22,9 @@ public class DbModule extends AbstractModule {
         bind(DataSource.class).toProvider(DataSourceProvider.class).in(Singleton.class);
         
         bind(DSLContext.class).toProvider(JooqProvider.class).in(Singleton.class);
-        
         bind(DSLContext.class).annotatedWith(TxJooq.class).toProvider(TxJooqProvider.class).in(Singleton.class);
 
         bind(ULTM.class).toProvider(ULTMProvider.class).in(Singleton.class);
         bind(TxManager.class).toProvider(TxManagerProvider.class).in(Singleton.class);
     }
-
 }

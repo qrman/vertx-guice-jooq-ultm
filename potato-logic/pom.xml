@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- the main verticle class name -->
-    <main.verticle>io.github.qrman.potato.vertx.PotatoVerticle</main.verticle>
+    <main.verticle>io.github.qrman.potato.verticle.PotatoVerticle</main.verticle>
     <vertx.version>3.0.0</vertx.version>
   </properties>
      

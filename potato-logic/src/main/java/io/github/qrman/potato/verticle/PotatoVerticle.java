@@ -1,4 +1,4 @@
-package io.github.qrman.potato;
+package io.github.qrman.potato.verticle;
 
 import com.google.inject.Guice;
 import io.github.qrman.potato.model.Potato;

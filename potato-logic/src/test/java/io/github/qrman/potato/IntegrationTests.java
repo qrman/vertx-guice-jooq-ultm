@@ -5,12 +5,11 @@ import com.google.inject.Inject;
 import io.github.qrman.potato.db.DBCleaner;
 import io.github.qrman.potato.db.guice.DbModule;
 import io.github.qrman.potato.guice.GuiceModule;
-import io.vertx.core.AsyncResult;
+import io.github.qrman.potato.verticle.PotatoVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -29,14 +28,14 @@ public class IntegrationTests {
         PropertiesReader propertiesReader = new PropertiesReader();
         propertiesReader.read();
         
-        DeploymentOptions dopt = new DeploymentOptions();
-        dopt.setConfig(propertiesReader.getAsJson());
+        DeploymentOptions dopts = new DeploymentOptions();
+        dopts.setConfig(propertiesReader.getAsJson());
 
         PotatoVerticle potatoVerticle = new PotatoVerticle();
-        rule.vertx().deployVerticle(potatoVerticle, dopt, context.asyncAssertSuccess());
+        rule.vertx().deployVerticle(potatoVerticle, dopts, context.asyncAssertSuccess());
 
         Guice.createInjector(
-          new PropertiesModule(propertiesReader.getAsProperties()),
+          new GuiceModuleForTests(propertiesReader.getAsProperties()),
           new DbModule(),
           new GuiceModule(rule.vertx())
         ).injectMembers(this);
