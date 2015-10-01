@@ -8,6 +8,9 @@ import io.github.qrman.potato.logic.BasementFetch;
 import io.github.qrman.potato.logic.RottenPotatoException;
 import io.github.qrman.potato.logic.BasementStore;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import java.util.List;
@@ -32,12 +35,18 @@ public class PotatoVerticle extends AbstractVerticle {
             PotatoBag potatoBag = Json.decodeValue(bagWithPotatoMessage.body(), PotatoBag.class);
             log.log(Level.INFO, "Potato bag received {0}", potatoBag);
 
-            try {
+            vertx.executeBlocking((Future<Void> future) -> {
                 basementStore.store(potatoBag);
-            } catch (RottenPotatoException ex) {
-                bagWithPotatoMessage.reply("Bag with rotten potato cannot be stored");
-            }
-            bagWithPotatoMessage.reply("Potato bag stored in basement");
+                future.complete();
+                
+            }, result -> {
+                if (result.succeeded()) {
+                    bagWithPotatoMessage.reply("Potato bag stored in basement");
+                }
+                if (result.failed() && result.cause() instanceof RottenPotatoException) {
+                    bagWithPotatoMessage.reply("Bag with rotten potato cannot be stored");
+                }
+            });
         });
 
         vertx.eventBus().consumer("potatoes-in-basement", (Message<String> countryMessage) -> {

@@ -42,6 +42,7 @@
       <artifactId>postgresql</artifactId>
       <version>9.4-1201-jdbc41</version>
     </dependency>
+    
     <!-- DB connection pooling -->
     <dependency>
       <groupId>com.zaxxer</groupId>
