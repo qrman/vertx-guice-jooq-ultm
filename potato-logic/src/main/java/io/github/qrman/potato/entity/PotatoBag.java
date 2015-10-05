@@ -1,4 +1,4 @@
-package io.github.qrman.potato.model;
+package io.github.qrman.potato.entity;
 
 import java.util.List;
 import lombok.Data;

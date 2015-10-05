@@ -2,8 +2,8 @@ package io.github.qrman.potato.verticle;
 
 import com.google.inject.Inject;
 import io.github.qrman.potato.IntegrationTests;
-import io.github.qrman.potato.model.PotatoBag;
-import io.github.qrman.potato.model.Potato;
+import io.github.qrman.potato.entity.PotatoBag;
+import io.github.qrman.potato.entity.Potato;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;

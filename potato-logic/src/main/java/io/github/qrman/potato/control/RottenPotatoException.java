@@ -1,4 +1,4 @@
-package io.github.qrman.potato.logic;
+package io.github.qrman.potato.control;
 
 public class RottenPotatoException extends RuntimeException {
 

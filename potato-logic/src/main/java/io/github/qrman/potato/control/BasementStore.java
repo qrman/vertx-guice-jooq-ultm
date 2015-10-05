@@ -1,4 +1,4 @@
-package io.github.qrman.potato.logic;
+package io.github.qrman.potato.control;
 
 import com.github.witoldsz.ultm.TxManager;
 import static io.github.qrman.potato.db.Tables.POTATO;
@@ -6,8 +6,8 @@ import static io.github.qrman.potato.db.Tables.POTATO_BAG;
 import io.github.qrman.potato.db.TxJooq;
 import io.github.qrman.potato.db.tables.records.PotatoBagRecord;
 import io.github.qrman.potato.db.tables.records.PotatoRecord;
-import io.github.qrman.potato.model.Potato;
-import io.github.qrman.potato.model.PotatoBag;
+import io.github.qrman.potato.entity.Potato;
+import io.github.qrman.potato.entity.PotatoBag;
 import javax.inject.Inject;
 import org.jooq.DSLContext;
 

@@ -1,18 +1,16 @@
 package io.github.qrman.potato.verticle;
 
 import com.google.inject.Guice;
-import io.github.qrman.potato.model.Potato;
-import io.github.qrman.potato.model.PotatoBag;
+import io.github.qrman.potato.entity.Potato;
+import io.github.qrman.potato.entity.PotatoBag;
 import io.github.qrman.potato.guice.GuiceModule;
-import io.github.qrman.potato.logic.BasementFetch;
-import io.github.qrman.potato.logic.RottenPotatoException;
-import io.github.qrman.potato.logic.BasementStore;
+import io.github.qrman.potato.control.BasementFetch;
+import io.github.qrman.potato.control.RottenPotatoException;
+import io.github.qrman.potato.control.BasementStore;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import javax.inject.Inject;
@@ -35,10 +33,9 @@ public class PotatoVerticle extends AbstractVerticle {
             PotatoBag potatoBag = Json.decodeValue(bagWithPotatoMessage.body(), PotatoBag.class);
             log.log(Level.INFO, "Potato bag received {0}", potatoBag);
 
-            vertx.executeBlocking((Future<Void> future) -> {
+            vertx.executeBlocking(future -> {
                 basementStore.store(potatoBag);
                 future.complete();
-                
             }, result -> {
                 if (result.succeeded()) {
                     bagWithPotatoMessage.reply("Potato bag stored in basement");
@@ -52,8 +49,18 @@ public class PotatoVerticle extends AbstractVerticle {
         vertx.eventBus().consumer("potatoes-in-basement", (Message<String> countryMessage) -> {
             String potatoOriginCountry = countryMessage.body();
             log.log(Level.INFO, "Searching in basement for potatoes from {0}", potatoOriginCountry);
-            List<Potato> potatoes = basementFetch.fetchByOrigin(potatoOriginCountry);
-            countryMessage.reply(Json.encode(potatoes));
+            
+             vertx.executeBlocking(future -> {
+                List<Potato> potatoes = basementFetch.fetchByOrigin(potatoOriginCountry);
+                future.complete(potatoes);
+             }, result -> {
+                if (result.succeeded()) {
+                    countryMessage.reply(Json.encode(result.result()));
+                }
+                if (result.failed()) {
+                    countryMessage.reply(Json.encode(Collections.EMPTY_LIST));
+                }
+            });
         });
     }
 }

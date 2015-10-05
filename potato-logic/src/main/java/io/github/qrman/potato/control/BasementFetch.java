@@ -1,8 +1,8 @@
-package io.github.qrman.potato.logic;
+package io.github.qrman.potato.control;
 
 import static io.github.qrman.potato.db.Tables.POTATO;
 import static io.github.qrman.potato.db.Tables.POTATO_BAG;
-import io.github.qrman.potato.model.Potato;
+import io.github.qrman.potato.entity.Potato;
 import java.util.List;
 import javax.inject.Inject;
 import org.jooq.DSLContext;

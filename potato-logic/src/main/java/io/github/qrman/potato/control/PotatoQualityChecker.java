@@ -1,6 +1,6 @@
-package io.github.qrman.potato.logic;
+package io.github.qrman.potato.control;
 
-import io.github.qrman.potato.model.Potato;
+import io.github.qrman.potato.entity.Potato;
 
 public class PotatoQualityChecker {
 
