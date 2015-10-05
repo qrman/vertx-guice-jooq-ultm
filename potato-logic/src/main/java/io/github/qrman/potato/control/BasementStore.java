@@ -15,13 +15,13 @@ public class BasementStore {
 
     private final TxManager txManager;
     private final DSLContext txJooq;
-    private final PotatoQualityChecker potatoQualityChecker;
+    private final PotatoQualityChecker qualityChecker;
 
     @Inject
-    public BasementStore(TxManager txManager, @TxJooq DSLContext txJooq, PotatoQualityChecker potatoQuality) {
+    public BasementStore(TxManager txManager, @TxJooq DSLContext txJooq, PotatoQualityChecker qualityChecker) {
         this.txManager = txManager;
         this.txJooq = txJooq;
-        this.potatoQualityChecker = potatoQuality;
+        this.qualityChecker = qualityChecker;
     }
 
     public void store(PotatoBag potatoBag) {
@@ -32,7 +32,7 @@ public class BasementStore {
 
             potatoBag.getItems().stream()
               .forEach((Potato potato) -> {
-                  potatoQualityChecker.check(potato);
+                  qualityChecker.check(potato);
                   storePotato(potato, potatoBagRecord);
               });
         });

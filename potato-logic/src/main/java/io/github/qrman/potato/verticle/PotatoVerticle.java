@@ -29,6 +29,7 @@ public class PotatoVerticle extends AbstractVerticle {
     public void start() throws Exception {
         Guice.createInjector(new GuiceModule(vertx)).injectMembers(this);
 
+        //Store PotatoBag
         vertx.eventBus().consumer("potato-bag", (Message<String> bagWithPotatoMessage) -> {
             PotatoBag potatoBag = Json.decodeValue(bagWithPotatoMessage.body(), PotatoBag.class);
             log.log(Level.INFO, "Potato bag received {0}", potatoBag);
@@ -46,6 +47,7 @@ public class PotatoVerticle extends AbstractVerticle {
             });
         });
 
+        //Fetch Potatoes by origin
         vertx.eventBus().consumer("potatoes-in-basement", (Message<String> countryMessage) -> {
             String potatoOriginCountry = countryMessage.body();
             log.log(Level.INFO, "Searching in basement for potatoes from {0}", potatoOriginCountry);
